@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_1 task_5</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+	<div id="task5">
+		<h2>Задача 5</h2>
+		<div style="max-width:500px; font-style: italic;"> Додаток містить масив об’єктів (логін, пароль) -- інсуючі логіни і паролі. Користувач вводить логін і пароль, а програма повідомляє чи може користувач бути авторизованим (чи є він одним з масиву).
+		</div>
+		<pre>
+			{
+			login: 'John',
+			password: '11111'
+			},
+			{
+			login: 'Jane',
+			password: '22222'
+			},
+			{
+			login: 'Peter',
+			password: '33333'
+			},
+			{
+			login: 'Lucie',
+			password: '44444'
+			},
+			{
+			login: 'Vova',
+			password: '55555'
+			},
+		===================================================================== 
+			</pre>
+		<label>
+			Login:
+			<input type="text" v-model="userLogin" :style="isAuthColor">
+		</label>
+		<br>
+		<label>
+			Password:
+			<input type="password" v-model.trim="userPassword" :style="isAuthColor">
+		</label>
+		<hr>
+		<button @click ="testUser">GO</button>
+		<button @click ="clearInput"> Очистити</button>
+	</div>
+
+	<script>
+		const users = [
+			{
+				login: 'John',
+				password: '11111'
+			},
+			{
+				login: 'Jane',
+				password: '22222'
+			},
+			{
+				login: 'Peter',
+				password: '33333'
+			},
+			{
+				login: 'Lucie',
+				password: '44444'
+			},
+			{
+				login: 'Vova',
+				password: '55555'
+			},
+		]
+		const {createApp} = Vue;
+		const app = createApp ({
+			data(){
+				return {
+					userLogin: '',
+					userPassword: '',
+					isAuthColor: 'black',
+				}
+			},
+			methods:{
+				testUser(){
+					let result = users.find((u)=>(u.login === this.userLogin && u.password === this.userPassword));
+					console.log(result);
+					if (result) {
+						this.isAuthColor = 'color: green';
+						alert('Ви авторизовані!');
+					} else {
+						this.isAuthColor = 'color: red';
+						alert('Користувача не знайдено!');
+					}
+				},
+				clearInput() {
+					this.userLogin = '';
+					this.userPassword = '';
+					this.isAuthColor = 'black';
+				}
+			} 
+		});
+		app.mount('#task5');
+	</script>
+</body>
+</html>

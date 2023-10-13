@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_1 task_3</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+	<div id="task3">
+		<h2>Задача 3</h2>
+		<div style="max-width:500px; font-style: italic;"> Задано початок та кінець діапазону. При натисканні на кнопку випадковим чином генерувати значення з вказаного діапазону	та відображати його.
+			===================================================================== </div>
+		<label>
+			Початок діапазону:
+			<input type="number" v-model="startRange">
+		</label>
+		<br>
+		<label>
+			Кінець діапазону:
+			<input type="number" v-model="endRange">
+		</label>
+		<hr>
+		<button @click="generateNumber">Генерувати число</button>
+		<div>{{randomNum}}</div>
+	</div>
+
+	<script>
+		const {createApp} = Vue;
+		const app = createApp ({
+			data(){
+				return {
+					startRange: null,
+					endRange: null,
+					randomNum: null
+				}
+			},
+			methods:{
+				generateNumber(){
+					this.randomNum = Math.floor(Math.random()*(this.endRange-this.startRange)+this.startRange);
+				}
+			} 
+		});
+		app.mount('#task3');
+	</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_1 task_4</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	<style>
+		div, label, input{
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="task4">
+		<h2>Задача 4</h2>
+		<div style="max-width:500px; font-style: italic;"> “Рахунок у банку”.
+		Вимоги:<br>
+		1) Спочатку сума дорівнює 0грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям.<br>
+		2) Сума автоматично переводиться у долари та євро (фіксований курс задається у data).<br>
+		3) можливість зарахувати суму (контролювати, щоб не була від’ємною)<br>
+		4) можливість зняти (щоб не можна зняти більше ніж є на рахунку)<br>
+		5) при виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків автоматично)<br>
+		
+		При зміні суми :<br>
+		- якщо було зняття, то суму відоражати червоним<br>
+		- якщо було зарахування, то суму відображати зеленим<br>
+		Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим<br>
+			===================================================================== </div>
+		<div>Сума на рахунку:
+			<span :style="sumColor">{{ accountSum }}</span> грн
+		</div>
+		<label>
+			Зарахувати на рахунок:
+			<input type="number" v-model="addToAccountSum">
+				<button @click="addToAccount"> Зарахувати </button>
+		</label>
+		<br>
+		<label>
+			Зняти з рахунку:
+			<input type="number" v-model="getFromAccountSum" @focus="onFocus">
+				<button @click="getFromAccount"> Зняти </button>
+		</label>
+		<hr>
+		<div>Відсотки за обслуговування: {{ countPercent }}</div>
+		<div style="color:red; font-size: 18px;"> {{message}}</div>
+		<hr>
+		<div>Сума у доларах:
+			<span :style = defineDollarColor> ${{ countDollarSum  }}</span>
+		</div>
+		<div>Сума у євро:
+			<span :style = defineEuroColor> €{{ countEuroSum }}</span>
+		</div>
+	</div>
+
+	<script>
+		const {createApp} = Vue;
+		const app = createApp ({
+			data(){
+				return {
+					accountSum: 0,
+					addToAccountSum: null,
+					getFromAccountSum: null,
+					percents: null,
+					message: null,
+					dollarCourse: 38,
+					euroCourse: 40,
+					sumColor: 'color:black'
+				}
+			},
+			computed:{
+				countDollarSum(){
+					return (this.accountSum/this.dollarCourse).toFixed(2);
+				},
+				countEuroSum(){
+					return (this.accountSum/this.euroCourse).toFixed(2);
+				},
+				countPercent() {
+					if (this.addToAccountSum > 0) {
+						return this.percents = (this.addToAccountSum * 0.03).toFixed(2);
+					};
+					if (this.getFromAccountSum > 0) {
+						return this.percents = (this.getFromAccountSum * 0.03).toFixed(2);
+					}
+				},
+				defineDollarColor(){
+					if (this.countDollarSum > 0 && this.countDollarSum < 100) {
+						return 'color: red';
+					} else if (this.countDollarSum > 100) {
+						return 'color: green';
+					}
+				},
+				defineEuroColor(){
+					if (this.countEuroSum > 0 && this.countEuroSum < 100) {
+						return 'color: red';
+					} else if (this.countEuroSum > 100) {
+						return 'color: green';
+					}
+				},
+			},
+			methods:{
+				addToAccount(){
+					if (this.addToAccountSum > 0) {
+						this.accountSum +=(this.addToAccountSum - this.percents);
+						this.addToAccountSum = null;
+						this.sumColor = 'color:green';
+					} else {
+						this.message = "Сума повинна бути більше 0";
+					}
+				},
+				getFromAccount(){
+					if (this.getFromAccountSum <= this.accountSum - this.percents) {
+						this.accountSum = this.accountSum-this.getFromAccountSum - this.percents;
+						this.getFromAccountSum = null;
+						this.sumColor = 'color:red';
+					} else {
+						this.message = "Недостатньо коштів";
+					}
+				},
+				onFocus() {
+					this.message = null;
+				}
+			} 
+		});
+		app.mount('#task4');
+	</script>
+</body>
+</html>

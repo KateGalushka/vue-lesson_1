@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue Lesson_1 task_2</title>
+	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+	<div id="task2">
+		<h2>Задача 2</h2>
+		<div style="max-width:500px; font-style: italic;"> Вводиться номер місяця. Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….). Також автоматично	виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс, …).
+			===================================================================== </div>
+		<label>
+			Введіть місяць (число):
+			<input type="number" v-model="monthNum" min="0" max="12">
+		</label>
+		<hr>
+		<div>Отже, <b>{{defineSeason}}</b>.</div>
+		<div>Треба вдягнути: {{defineClothes}}</div>
+		<img :src="defineImage" width="400" style="margin-top: 30px;">
+	</div>
+
+	<script>
+		const {createApp} = Vue;
+		const seasons = [
+			{
+				title: 'winter',
+				months: [12,1,2],
+				clothes: 'Пальто, шапку, теплі штани',
+				imgSrc: 'img/winter-forest.jpg'
+			},
+			{
+				title: 'spring',
+				months: [3,4,5],
+				clothes: 'Куртку, джинси',
+				imgSrc: 'img/spring-forest.jpg' 
+			},
+			{
+				title: 'summer',
+				months: [6,7,8],
+				clothes: 'Шорти, футболку',
+				imgSrc: 'img/summer-forest.jpg' 
+			},
+			{
+				title: 'autumn',
+				months: [9,10,11],
+				clothes: 'Рубашку, джинси, жилет',
+				imgSrc: 'img/autumn-forest.jpg' 
+			}
+		];
+		const app = createApp ({
+			data(){
+				return {
+					monthNum: null,
+					season: null,
+				}
+			},
+			computed:{
+				defineSeason(){
+					for (let i in seasons){
+						if (seasons[i].months.includes(this.monthNum)) {
+							return this.season = seasons[i].title;
+						}
+					}
+				},
+				defineClothes(){
+					for (let i in seasons) {
+						if (this.season && this.season == seasons[i].title){
+							return seasons[i].clothes;
+						}
+					}
+				},
+				defineImage(){
+					for (let i in seasons) {
+						if (this.season && this.season == seasons[i].title){
+							return seasons[i].imgSrc;
+						}
+					}
+				}
+			} 
+		});
+		app.mount('#task2');
+	</script>
+</body>
+</html>
