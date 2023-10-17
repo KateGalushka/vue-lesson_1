@@ -61,7 +61,6 @@
 					accountSum: 0,
 					addToAccountSum: null,
 					getFromAccountSum: null,
-					percents: null,
 					message: null,
 					dollarCourse: 38,
 					euroCourse: 40,
@@ -77,31 +76,32 @@
 				},
 				countPercent() {
 					if (this.addToAccountSum > 0) {
-						return this.percents = (this.addToAccountSum * 0.03).toFixed(2);
+						return (this.addToAccountSum * 0.03).toFixed(2);
 					};
 					if (this.getFromAccountSum > 0) {
-						return this.percents = (this.getFromAccountSum * 0.03).toFixed(2);
+						return (this.getFromAccountSum * 0.03).toFixed(2);
 					}
 				},
 				defineDollarColor(){
-					if (this.countDollarSum > 0 && this.countDollarSum < 100) {
-						return 'color: red';
-					} else if (this.countDollarSum > 100) {
-						return 'color: green';
-					}
+					// if (this.countDollarSum > 0 && this.countDollarSum < 100) {
+					// 	return 'color: red';
+					// } else if (this.countDollarSum > 100) {
+					// 	return 'color: green';
+					return this.countDollarSum < 100? 'color: red': 'color: green';
 				},
 				defineEuroColor(){
-					if (this.countEuroSum > 0 && this.countEuroSum < 100) {
-						return 'color: red';
-					} else if (this.countEuroSum > 100) {
-						return 'color: green';
-					}
+					// if (this.countEuroSum > 0 && this.countEuroSum < 100) {
+					// 	return 'color: red';
+					// } else if (this.countEuroSum > 100) {
+					// 	return 'color: green';
+					// }
+					return this.countEuroSum < 100 ? 'color: red' : 'color: green';
 				},
 			},
 			methods:{
 				addToAccount(){
 					if (this.addToAccountSum > 0) {
-						this.accountSum +=(this.addToAccountSum - this.percents);
+						this.accountSum +=(this.addToAccountSum - this.countPercent);
 						this.addToAccountSum = null;
 						this.sumColor = 'color:green';
 					} else {
@@ -109,8 +109,8 @@
 					}
 				},
 				getFromAccount(){
-					if (this.getFromAccountSum <= this.accountSum - this.percents) {
-						this.accountSum = this.accountSum-this.getFromAccountSum - this.percents;
+					if (this.getFromAccountSum <= this.accountSum - this.countPercent) {
+						this.accountSum = this.accountSum-this.getFromAccountSum - this.countPercent;
 						this.getFromAccountSum = null;
 						this.sumColor = 'color:red';
 					} else {

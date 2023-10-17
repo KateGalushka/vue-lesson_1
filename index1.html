@@ -16,12 +16,12 @@
 		===================================================================== </div>
 		<label>
 			Введіть кількість пасажирів:
-			<input type="text" v-model="passengersAmount">
+			<input type="number" v-model="passengersAmount">
 		</label>
 		<hr>
 		<div>Потрібна кількість автобусів: {{getBusAmount}}</div>
-		<div>Потрібно пляшок води: {{ passengersAmount*2 }}</div>
-		<div>Потрібно бутербродів: {{ passengersAmount*3 }}</div>
+		<div>Потрібно пляшок води: {{ getBottlesAmount }}</div>
+		<div>Потрібно бутербродів: {{ getSandwichesAmount }}</div>
 	</div>
 	<script>
 		const {createApp} = Vue;
@@ -34,6 +34,12 @@
 			computed:{
 				getBusAmount(){
 					return Math.ceil(this.passengersAmount/20);
+				},
+				getBottlesAmount(){
+					return this.passengersAmount*2;
+				},
+				getSandwichesAmount(){
+					return this.passengersAmount*3;
 				}
 			}
 		});

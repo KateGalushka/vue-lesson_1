@@ -9,75 +9,86 @@
 <body>
 	<div id="task2">
 		<h2>Задача 2</h2>
-		<div style="max-width:500px; font-style: italic;"> Вводиться номер місяця. Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….). Також автоматично	виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс, …).
-			===================================================================== </div>
+		<div style="max-width:500px; font-style: italic;">
+			 Вводиться номер місяця. Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….). Також автоматично	виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс, …).
+			=====================================================================
+		</div>
 		<label>
 			Введіть місяць (число):
 			<input type="number" v-model="monthNum" min="0" max="12">
 		</label>
 		<hr>
-		<div>Отже, <b>{{defineSeason}}</b>.</div>
-		<div>Треба вдягнути: {{defineClothes}}</div>
-		<img :src="defineImage" width="400" style="margin-top: 30px;">
+		<div v-if="season">
+			<div>Отже, <b>{{ season.title }}</b>.</div>
+			<div>Треба вдягнути: {{ season.clothes }}</div>
+			<img :src="season.imgSrc" width="400" style="margin-top: 30px;"> 
+		</div>
+
 	</div>
 
 	<script>
 		const {createApp} = Vue;
-		const seasons = [
-			{
-				title: 'winter',
-				months: [12,1,2],
-				clothes: 'Пальто, шапку, теплі штани',
-				imgSrc: 'img/winter-forest.jpg'
-			},
-			{
-				title: 'spring',
-				months: [3,4,5],
-				clothes: 'Куртку, джинси',
-				imgSrc: 'img/spring-forest.jpg' 
-			},
-			{
-				title: 'summer',
-				months: [6,7,8],
-				clothes: 'Шорти, футболку',
-				imgSrc: 'img/summer-forest.jpg' 
-			},
-			{
-				title: 'autumn',
-				months: [9,10,11],
-				clothes: 'Рубашку, джинси, жилет',
-				imgSrc: 'img/autumn-forest.jpg' 
-			}
-		];
 		const app = createApp ({
 			data(){
 				return {
-					monthNum: null,
-					season: null,
+					seasons: [
+						{
+							title: 'winter',
+							months: [12, 1, 2],
+							clothes: 'Пальто, шапку, теплі штани',
+							imgSrc: 'img/winter-forest.jpg'
+						},
+						{
+							title: 'spring',
+							months: [3, 4, 5],
+							clothes: 'Куртку, джинси',
+							imgSrc: 'img/spring-forest.jpg'
+						},
+						{
+							title: 'summer',
+							months: [6, 7, 8],
+							clothes: 'Шорти, футболку',
+							imgSrc: 'img/summer-forest.jpg'
+						},
+						{
+							title: 'autumn',
+							months: [9, 10, 11],
+							clothes: 'Рубашку, джинси, жилет',
+							imgSrc: 'img/autumn-forest.jpg'
+						}
+					],
+					monthNum: null
 				}
 			},
 			computed:{
-				defineSeason(){
-					for (let i in seasons){
-						if (seasons[i].months.includes(this.monthNum)) {
-							return this.season = seasons[i].title;
-						}
-					}
-				},
-				defineClothes(){
-					for (let i in seasons) {
-						if (this.season && this.season == seasons[i].title){
-							return seasons[i].clothes;
-						}
-					}
-				},
-				defineImage(){
-					for (let i in seasons) {
-						if (this.season && this.season == seasons[i].title){
-							return seasons[i].imgSrc;
-						}
-					}
+				season(){
+					let currentSeason;
+					currentSeason = this.seasons.find((s) => s.months.includes(this.monthNum));
+					return currentSeason;
 				}
+				
+				// defineSeason(){
+				// 	for (let i in seasons){
+				// 		if (seasons[i].months.includes(this.monthNum)) {
+				// 			return this.season = seasons[i].title;
+				// 		}
+				// 	}
+				// },
+				// defineClothes(){
+				// 	for (let i in seasons) {
+				// 		if (this.season && this.season == seasons[i].title){
+				// 			return seasons[i].clothes;
+				// 		}
+				// 	}
+				// },
+				// defineImage(){
+				// 	for (let i in seasons) {
+				// 		if (this.season && this.season == seasons[i].title){
+				// 			return seasons[i].imgSrc;
+				// 		}
+				// 	}
+				// }
+
 			} 
 		});
 		app.mount('#task2');
